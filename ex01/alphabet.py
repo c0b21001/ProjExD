@@ -1,6 +1,5 @@
-from codecs import escape_encode
 import random
-import datetime
+import time
 
 def monndai():
     print(f"対象文字{moji[:hyouji]}")
@@ -26,6 +25,7 @@ def monndai():
             else:
                 print("不正解")
 if  __name__ == "__main__":
+    start = time.time()
     moji = [chr(i)for i in range(ord("a"),ord("z")-1)]
     random.shuffle(moji)
     kesson = random.randint(1,10)
@@ -34,3 +34,5 @@ if  __name__ == "__main__":
     seikimoji = moji[:10]
     kessonmoji = seikimoji[-kesson:]
     monndai()
+    end = time.time()
+    print(f"所要時間：{(end-start):.2f}秒")
