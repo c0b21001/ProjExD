@@ -12,7 +12,6 @@ def click_equal(event):          #＝をクリックした場合
     entry.delete(0,tk.END)
     entry.insert(tk.END, res)
 
-
 def click_AC(event):          #ACをクリックした場合
     entry.delete(0,tk.END)
 
@@ -43,7 +42,7 @@ def click_percent(event):          #%をクリックした場合
     entry.insert(tk.END, f"{strres}0%")
 
 def click_del(event):          #delをクリックした場合
-    s = entry.get()
+    s = click_del
     entry.delete(len(s)-1,tk.END)
 
 root= tk.Tk()                   #画面の設定
