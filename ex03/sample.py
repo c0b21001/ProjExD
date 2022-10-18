@@ -20,6 +20,9 @@ def key_down(event):
     jid = root.after(1000, count_up)
 
 if __name__ == "__main__":
+
+    start = time.time() #時間表示
+
     root = tk.Tk()
     label = tk.Label(root, font=("", 80))
     label.pack()
