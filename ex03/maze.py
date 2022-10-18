@@ -3,8 +3,6 @@ import tkinter as tk
 import tkinter.messagebox as tkm
 import maze_maker as mm #練習8
 
-
-
 def key_down(event):#練習5
     global key
     key = event.keysym
@@ -67,12 +65,6 @@ def main_proc():
         if key == "Left":
             mx += 1
     
-        
-
-    
-        
-
-
     canv.coords("tori",cx, cy)
     root.after(100,main_proc)
 
@@ -99,8 +91,6 @@ if __name__ == "__main__":
     ssx, ssy = sx*100+50, sy*100+50
     canv.create_image(ssx, ssy, image=start1, tag = "start")
 
-
-
     #ゴール
     goal = tk.PhotoImage(file="fig/goal.png")
     gx, gy = 13, 7
@@ -116,18 +106,13 @@ if __name__ == "__main__":
     cx, cy = mx*100+50, my*100+50
     canv.create_image(cx, cy, image=tori, tag = "tori")
 
-    
-
      #練習4
     key = "" #現在押されているキーを表す 
     #練習5,6
     root.bind("<KeyPress>",key_down)
     root.bind("<KeyRelease>",key_up)
 
-    
-
     #練習7
     main_proc()
-
 
     root.mainloop()
