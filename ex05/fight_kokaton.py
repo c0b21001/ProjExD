@@ -29,6 +29,11 @@ import os
 # import basic pygame modules
 import pygame as pg
 
+import time
+
+import tkinter as tk
+import tkinter.messagebox as tkm
+
 # see if we can load more than standard BMP
 if not pg.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
@@ -252,6 +257,8 @@ class Score(pg.sprite.Sprite):
 
 
 def main(winstyle=0):
+    start = time.time()
+    
     # Initialize pygame
     if pg.get_sdl_version()[0] == 2:
         pg.mixer.pre_init(44100, 32, 2, 1024)
@@ -312,7 +319,6 @@ def main(winstyle=0):
     Shot.containers = shots, all
     Ult.containers = shots, all
 
-    #Ult.containers = shots, all
 
     Bomb.containers = bombs, all
     Explosion.containers = all
@@ -400,6 +406,9 @@ def main(winstyle=0):
             Explosion(player)
             SCORE = SCORE + 1
             player.kill()
+            end = time.time()
+            tkm.showinfo("end", f"所要時間：{end}秒")
+
 
         # See if shots hit the aliens.
         for alien in pg.sprite.groupcollide(aliens, shots, 1, 1).keys():
@@ -426,6 +435,8 @@ def main(winstyle=0):
     if pg.mixer:
         pg.mixer.music.fadeout(1000)
     pg.time.wait(1000)
+    end = time.time()
+    tkm.showinfo("end", f"所要時間：{end - start}秒")
 
 
 # call the "main" function if running this script
