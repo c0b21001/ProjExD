@@ -217,8 +217,8 @@ class Bomb(pg.sprite.Sprite):
             self.kill()
 
 
-class Ult(pg.sprite.Sprite):
-    speed = -30
+class Ult(pg.sprite.Sprite):                     #ここが溜め攻撃のクラスです
+    speed = -30                                 #380行目で使ってます
     images = []
 
     def __init__(self, pos):
