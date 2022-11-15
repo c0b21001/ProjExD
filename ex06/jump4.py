@@ -139,7 +139,9 @@ class Player(pg.sprite.Sprite):
 		#jumpしているかのフラグ
 		self.jumped = False
 		#地面についているかのフラグ
-		self.on_ground = True
+		self.on_ground = True 
+		#壁についているかのフラグ（澤木）
+		self.wall = False
 		#空中にいる状態かのフラグ
 		self.in_the_air = False
 		#死亡したかのフラグ
@@ -225,7 +227,7 @@ class Player(pg.sprite.Sprite):
 	def collisionX(self,data):
 		for tile in data:
 			if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
-				return True
+				self.wall = True #澤木
 
 	#Y軸方向の当たり判定			
 	def collisionY(self,data):
@@ -239,7 +241,12 @@ class Player(pg.sprite.Sprite):
 					self.dy = tile[1].top - self.rect.bottom
 					self.vel_y = 0
 					self.on_ground = True
-					self.in_the_air = False	
+					self.in_the_air = False
+					self.wall = False #澤木
+		
+		#壁に接触した瞬間跳ね返る(澤木)
+		if self.wall:
+			self.dx *= -1
 
 	#重力の設定メソッド
 	def add_gravity(self):
