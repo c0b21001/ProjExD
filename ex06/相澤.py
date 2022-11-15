@@ -31,6 +31,7 @@ DOWN_EDGE =int(screen_height / 5)
 #csvからデータを呼び出して、リストに格納する。
 stage_data = []
 
+bg_y = 0
 
 #with openでファイルを開き、1行づつ空のリストに格納
 with open("ex06/stage.csv",newline='') as data:
@@ -138,7 +139,9 @@ class Player(pg.sprite.Sprite):
 		#jumpしているかのフラグ
 		self.jumped = False
 		#地面についているかのフラグ
-		self.on_ground = True
+		self.on_ground = True 
+		#壁についているかのフラグ（澤木）
+		self.wall = False
 		#空中にいる状態かのフラグ
 		self.in_the_air = False
 		#死亡したかのフラグ
@@ -224,7 +227,7 @@ class Player(pg.sprite.Sprite):
 	def collisionX(self,data):
 		for tile in data:
 			if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
-				return True
+				self.wall = True #澤木
 
 	#Y軸方向の当たり判定			
 	def collisionY(self,data):
@@ -238,7 +241,12 @@ class Player(pg.sprite.Sprite):
 					self.dy = tile[1].top - self.rect.bottom
 					self.vel_y = 0
 					self.on_ground = True
-					self.in_the_air = False	
+					self.in_the_air = False
+					self.wall = False #澤木
+		
+		#壁に接触した瞬間跳ね返る(澤木)
+		if self.wall:
+			self.dx *= -1
 
 	#重力の設定メソッド
 	def add_gravity(self):
@@ -282,9 +290,7 @@ class Game():
 		#スプライトクラス設定してプレイヤーを追加
 		self.playerSprite = pg.sprite.GroupSingle(self.player)
 
-		#バックグラウンド画像の呼び出し、サイズ設定
-		self.bg = pg.image.load('ex06/img/BG.png').convert()
-		self.bg = pg.transform.scale(self.bg,(screen_width,screen_height))
+		#バックグラウンド画像の呼び出し、サイズ設
 
 	#溝に落ちた際に実行するメソッド
 	def respawn(self):
@@ -293,6 +299,9 @@ class Game():
 	
 	#メインループ処理
 	def main(self):
+		bg = pg.image.load('ex06/img/BG2.png').convert()
+		bg = pg.transform.scale(bg,(screen_width,screen_height))
+		global bg_y
 		running = True
 		while running:	
 			for event in pg.event.get():
@@ -306,8 +315,11 @@ class Game():
 			SCREEN.fill((55,100,200))
 			
 			#背景を描画
-			SCREEN.blit(self.bg,(0,0))
+			#SCREEN.blit(self.bg,(0,0))
 			#ステージの描画
+			bg_y = (bg_y+0.4)%screen_height
+			SCREEN.blit(bg,[0,bg_y])
+			SCREEN.blit(bg,[0,bg_y-screen_height])
 			self.stage.draw()
 
 			#プレイヤーが画面の端周辺に来た場合にバックグラウンド側を動かす処理（左右）
@@ -349,6 +361,7 @@ class Game():
 			#クロック実行
 			CLOCK.tick(FPS)
 			pg.display.update()
+			
 
 		pg.quit()
 
