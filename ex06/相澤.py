@@ -299,11 +299,7 @@ class Game():
 	
 	#メインループ処理
 	def main(self):
-<<<<<<< HEAD:ex06/相澤.py
 		bg = pg.image.load('ex06/img/BG2.png').convert()
-=======
-		bg = pg.image.load('ex06/pic/night1.png').convert()
->>>>>>> 3a274bf02a1decce3d4a7055b4edb83bb375d07a:ex06/jump4.py
 		bg = pg.transform.scale(bg,(screen_width,screen_height))
 		global bg_y
 		running = True
