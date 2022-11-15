@@ -289,8 +289,6 @@ class Game():
 		#スプライトクラス設定してプレイヤーを追加
 		self.playerSprite = pg.sprite.GroupSingle(self.player)
 
-		#バックグラウンド画像の呼び出し、サイズ設
-
 	#溝に落ちた際に実行するメソッド
 	def respawn(self):
 		self.player = Player(100, 0)
