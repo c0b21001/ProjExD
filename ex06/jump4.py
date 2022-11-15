@@ -361,4 +361,4 @@ class Game():
 
 #インスタンス化　→　実行
 game = Game()
-game.main()
+game.main()   
