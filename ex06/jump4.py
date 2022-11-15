@@ -31,9 +31,10 @@ DOWN_EDGE =int(screen_height / 5)
 #csvからデータを呼び出して、リストに格納する。
 stage_data = []
 
+bg_y = 0
 
 #with openでファイルを開き、1行づつ空のリストに格納
-with open("ex06/stage.csv",newline='') as data:
+with open("team\ProjExD-1/ex06/stage.csv",newline='') as data:
     reader = csv.reader(data,delimiter=',')
     for row in reader:
         #リストに格納する内容は文字列型(str)になっているので数値型(int)に変換します。
@@ -49,8 +50,8 @@ class Stage():
 		#空のリストを用意
 		self.tile_list = []
 		#4枚のタイルが1つになった画像を呼び出します
-		self.sprite_sheet = pg.image.load("ex06/img/tiles.png").convert_alpha()
-		image = pg.image.load("ex06/img/egg.jpg").convert_alpha()
+		self.sprite_sheet = pg.image.load("team\ProjExD-1/ex06/img/tiles.png").convert_alpha()
+		image = pg.image.load("team\ProjExD-1/ex06/img/egg.jpg").convert_alpha()
 		
 		#引数dataリスト内の位置とサイズ情報を格納していく
 		#dataは先ほど作成したstage_data
@@ -119,7 +120,7 @@ class Player(pg.sprite.Sprite):
 	def __init__(self, x, y):
 		super().__init__()
 		#画像の設定
-		image = pg.image.load("ex06/img/tori.png").convert_alpha()
+		image = pg.image.load("team\ProjExD-1/ex06/img/tori.png").convert_alpha()
 		image = pg.transform.scale(image,(PLAYER_SIZE,PLAYER_SIZE))
 		self.right_image = image
 		#元の画像が左向きなので画像を180度Y軸に反転させる
@@ -282,9 +283,7 @@ class Game():
 		#スプライトクラス設定してプレイヤーを追加
 		self.playerSprite = pg.sprite.GroupSingle(self.player)
 
-		#バックグラウンド画像の呼び出し、サイズ設定
-		self.bg = pg.image.load('ex06/img/BG.png').convert()
-		self.bg = pg.transform.scale(self.bg,(screen_width,screen_height))
+		#バックグラウンド画像の呼び出し、サイズ設
 
 	#溝に落ちた際に実行するメソッド
 	def respawn(self):
@@ -293,6 +292,9 @@ class Game():
 	
 	#メインループ処理
 	def main(self):
+		bg = pg.image.load('ex06/pic/night1.png').convert()
+		bg = pg.transform.scale(bg,(screen_width,screen_height))
+		global bg_y
 		running = True
 		while running:	
 			for event in pg.event.get():
@@ -306,8 +308,11 @@ class Game():
 			SCREEN.fill((55,100,200))
 			
 			#背景を描画
-			SCREEN.blit(self.bg,(0,0))
+			#SCREEN.blit(self.bg,(0,0))
 			#ステージの描画
+			bg_y = (bg_y+0.4)%screen_height
+			SCREEN.blit(bg,[0,bg_y])
+			SCREEN.blit(bg,[0,bg_y-screen_height])
 			self.stage.draw()
 
 			#プレイヤーが画面の端周辺に来た場合にバックグラウンド側を動かす処理（左右）
@@ -349,6 +354,7 @@ class Game():
 			#クロック実行
 			CLOCK.tick(FPS)
 			pg.display.update()
+			
 
 		pg.quit()
 
