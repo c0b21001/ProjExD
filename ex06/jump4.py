@@ -21,6 +21,11 @@ pg.display.set_caption('Platform')
 #時間の設定
 CLOCK = pg.time.Clock()
 FPS = 60
+#主人公の状態
+PV = 1
+# 主人公の強さ
+PP = 10
+
 
 #画面の左右の端を設定（この範囲を超えるとバックグラウンドが動く（プレイヤーは止まる））
 RIGHT_EDGE = screen_width - int(screen_width / 5)
@@ -46,6 +51,7 @@ with open("ex06/stage.csv",newline='') as data:
 
 class Stage():
 	def __init__(self, data):
+		global PV
 		#空のリストを用意
 		self.tile_list = []
 		#4枚のタイルが1つになった画像を呼び出します
@@ -117,9 +123,16 @@ class Stage():
 
 class Player(pg.sprite.Sprite):
 	def __init__(self, x, y):
+		global PV
+		global PP
 		super().__init__()
 		#画像の設定
-		image = pg.image.load("ex06/img/tori.png").convert_alpha()
+		#プレイヤーの画像設定
+		if PV == 1:#PVが１の時、通常ビジュアル
+			image = pg.image.load("ex06/img/run.png").convert_alpha()
+		if PV == 2:#PVが２の時、勇者ビジュアル
+			image = pg.image.load("ex06/img/yuusya.png").convert_alpha()
+
 		image = pg.transform.scale(image,(PLAYER_SIZE,PLAYER_SIZE))
 		self.right_image = image
 		#元の画像が左向きなので画像を180度Y軸に反転させる
@@ -270,6 +283,16 @@ class Player(pg.sprite.Sprite):
 		self.key_con(data)
 		self.draw()
 
+	#敵との戦いの処理
+def Vs(self,VP):
+	if (PP<=VP):#PPがVPより小さい場合
+        		#プライヤーが死ぬ
+        	self.kill()
+
+def PV02():
+	global PV
+	PV = 2
+
 
 #ゲームクラス	
 class Game():
@@ -286,6 +309,13 @@ class Game():
 		self.bg = pg.image.load('ex06/img/BG.png').convert()
 		self.bg = pg.transform.scale(self.bg,(screen_width,screen_height))
 
+		#鍵のフラグ
+		self.key_appear = True
+
+		#敵フラグ
+		#ドラゴンのフラグ
+		self.dragon_appear = True
+
 	#溝に落ちた際に実行するメソッド
 	def respawn(self):
 		self.player = Player(100, 0)
@@ -293,6 +323,8 @@ class Game():
 	
 	#メインループ処理
 	def main(self):
+		global PP
+		global PV
 		running = True
 		while running:	
 			for event in pg.event.get():
@@ -304,9 +336,39 @@ class Game():
 			
 			#画面の初期化
 			SCREEN.fill((55,100,200))
+			#敵の画像設定
+			dragon_v = pg.image.load("ex06/img/dragon.png")
+			#剣の画像設定
+			ken = pg.image.load("ex06/img/seiken.png")
 			
 			#背景を描画
 			SCREEN.blit(self.bg,(0,0))
+
+			if self.dragon_appear:
+				dragon = pg.draw.rect(SCREEN,(255, 250, 0),(screen_width - 400, 100, 30, 30))
+				SCREEN.blit(dragon_v,(screen_width - 480, 25, 50, 50))
+			
+			#ドラゴンに振れた時の処理
+			if self.dragon_appear == False:
+				Vs(self.player,1000)
+
+			#剣の描画
+			if self.key_appear:
+				key = pg.draw.rect(SCREEN,(255, 255, 255),(screen_width - 1000, 280, 30, 30))
+				SCREEN.blit(ken,(800,280))
+			#剣をとった時の処理
+			if self.key_appear == False:
+				PV = 2
+				if (PP<9000):
+					PP += 1000
+
+			#プレイヤーと鍵の衝突判定
+			if self.player.rect.colliderect(key):
+				self.key_appear = False	
+
+			if self.player.rect.colliderect(dragon):
+				self.dragon_appear = False	
+			
 			#ステージの描画
 			self.stage.draw()
 
@@ -321,7 +383,7 @@ class Game():
 			elif self.player.rect.x < LEFT_EDGE and self.player.LEFT:
 				self.stage.scroll_back()
 				if self.player.collisionX:
-					self.player.rect.x += 5
+					self.player.rect.x += 5             
 			
 			#プレイヤーが画面の端周辺に来た場合にバックグラウンド側を動かす処理(上下)
 			if self.player.rect.y > UP_EDGE and self.player.UP:
@@ -335,11 +397,13 @@ class Game():
 				self.stage.scroll_foot()
 				if self.player.collisionY:
 					self.player.rect.y += 5
-            
-            
 			
 			#プレイヤーが溝に落っこちた時の処理
 			if self.player.dead:
+				PP = 10
+				PV = 1
+				self.key_appear = True
+				self.dragon_appear = True
 				self.respawn()
 				self.player.dead = False
 
