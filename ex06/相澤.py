@@ -34,7 +34,7 @@ stage_data = []
 bg_y = 0
 
 #with openでファイルを開き、1行づつ空のリストに格納
-with open("team\ProjExD-1/ex06/stage.csv",newline='') as data:
+with open("ex06/stage.csv",newline='') as data:
     reader = csv.reader(data,delimiter=',')
     for row in reader:
         #リストに格納する内容は文字列型(str)になっているので数値型(int)に変換します。
@@ -50,8 +50,8 @@ class Stage():
 		#空のリストを用意
 		self.tile_list = []
 		#4枚のタイルが1つになった画像を呼び出します
-		self.sprite_sheet = pg.image.load("team\ProjExD-1/ex06/img/tiles.png").convert_alpha()
-		image = pg.image.load("team\ProjExD-1/ex06/img/egg.jpg").convert_alpha()
+		self.sprite_sheet = pg.image.load("ex06/img/tiles.png").convert_alpha()
+		image = pg.image.load("ex06/img/egg.jpg").convert_alpha()
 		
 		#引数dataリスト内の位置とサイズ情報を格納していく
 		#dataは先ほど作成したstage_data
@@ -120,7 +120,7 @@ class Player(pg.sprite.Sprite):
 	def __init__(self, x, y):
 		super().__init__()
 		#画像の設定
-		image = pg.image.load("team\ProjExD-1/ex06/img/tori.png").convert_alpha()
+		image = pg.image.load("ex06/img/tori.png").convert_alpha()
 		image = pg.transform.scale(image,(PLAYER_SIZE,PLAYER_SIZE))
 		self.right_image = image
 		#元の画像が左向きなので画像を180度Y軸に反転させる
