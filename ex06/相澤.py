@@ -4,8 +4,8 @@ import csv
 
 
 #画面サイズの設定
-SCREEN_WIDTH = 1800
-SCREEN_HEIGHT = 900
+SCREEN_WIDTH = 1800 
+SCREEN_HEIGHT = 900 
 #1マスのサイズを設定
 tile_size = 50
 #画面サイズを１マスのサイズで割った数を取得
