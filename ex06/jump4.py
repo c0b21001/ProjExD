@@ -348,7 +348,7 @@ class Game():
 				dragon = pg.draw.rect(SCREEN,(255, 250, 0),(screen_width - 400, 100, 30, 30))
 				SCREEN.blit(dragon_v,(screen_width - 480, 25, 50, 50))
 			
-			#ドラゴンに振れた時の処理
+			#ドラゴンに振れた時の処理(長谷川)
 			if self.dragon_appear == False:
 				Vs(self.player,1000)
 
@@ -356,13 +356,13 @@ class Game():
 			if self.key_appear:
 				key = pg.draw.rect(SCREEN,(255, 255, 255),(screen_width - 1000, 280, 30, 30))
 				SCREEN.blit(ken,(800,280))
-			#剣をとった時の処理
+			#剣をとった時の処理（長谷川）
 			if self.key_appear == False:
 				PV = 2
 				if (PP<9000):
 					PP += 1000
 
-			#プレイヤーと鍵の衝突判定
+			#プレイヤーと鍵の衝突判定（長谷川）
 			if self.player.rect.colliderect(key):
 				self.key_appear = False	
 
