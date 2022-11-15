@@ -4,18 +4,18 @@ import csv
 
 
 #画面サイズの設定
-screen_width = 1800
-screen_height = 900
+SCREEN_WIDTH = 1800
+SCREEN_HEIGHT = 900
 #1マスのサイズを設定
 tile_size = 50
 #画面サイズを１マスのサイズで割った数を取得
-ROWS = int(screen_width / tile_size) #24
-COLUMNS = int(screen_height / tile_size) #12
+ROWS = int(SCREEN_WIDTH / tile_size) #24
+COLUMNS = int(SCREEN_HEIGHT / tile_size) #12
 #プレイヤーのサイズ
 PLAYER_SIZE = 50
  
 #画面のサイズ指定
-SCREEN = pg.display.set_mode((screen_width, screen_height))
+SCREEN = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 #タイトルの設定
 pg.display.set_caption('Platform')	
 #時間の設定
@@ -23,11 +23,11 @@ CLOCK = pg.time.Clock()
 FPS = 60
 
 #画面の左右の端を設定（この範囲を超えるとバックグラウンドが動く（プレイヤーは止まる））
-RIGHT_EDGE = screen_width - int(screen_width / 5)
-LEFT_EDGE = int(screen_width / 5)
+RIGHT_EDGE = SCREEN_WIDTH - int(SCREEN_WIDTH / 5)
+LEFT_EDGE = int(SCREEN_WIDTH / 5)
 #画面の上下の端を設定（この範囲を超えるとバックグラウンドが動く（プレイヤーは止まる））
-UP_EDGE = screen_height - int(screen_height / 5)
-DOWN_EDGE =int(screen_height / 5)
+UP_EDGE = SCREEN_HEIGHT - int(SCREEN_HEIGHT / 5)
+DOWN_EDGE =int(SCREEN_HEIGHT / 5)
 #csvからデータを呼び出して、リストに格納する。
 stage_data = []
 
@@ -52,7 +52,6 @@ class Stage():
 		#4枚のタイルが1つになった画像を呼び出します
 		self.sprite_sheet = pg.image.load("ex06/img/tiles.png").convert_alpha()
 		image = pg.image.load("ex06/img/egg.jpg").convert_alpha()
-		
 		#引数dataリスト内の位置とサイズ情報を格納していく
 		#dataは先ほど作成したstage_data
 		row_count = 0
@@ -205,13 +204,13 @@ class Player(pg.sprite.Sprite):
 			self.dx = 0
 		if self.rect.x <= 0 and self.LEFT:
 			self.dx = 0
-		if self.rect.x >= screen_width:
+		if self.rect.x >= SCREEN_WIDTH:
 			self.dx = 0
 		if self.rect.y > UP_EDGE and self.UP:
 			self.dy = 0
 		if self.rect.y <= 0 and self.DOWN:
 			self.dy = 0
-		if self.rect.y >= screen_height:
+		if self.rect.y >= SCREEN_HEIGHT:
 			self.dy = 0
 
 		#プレイヤーの位置に移動速度を足す
@@ -219,7 +218,7 @@ class Player(pg.sprite.Sprite):
 		self.rect.y += self.dy
 
 		#プレイヤーが地面のギャップに落ちた時の処理
-		if self.rect.top >= screen_height:
+		if self.rect.top >= SCREEN_HEIGHT:
 			self.dead = True
 			self.kill()
 
@@ -300,7 +299,7 @@ class Game():
 	#メインループ処理
 	def main(self):
 		bg = pg.image.load('ex06/img/BG2.png').convert()
-		bg = pg.transform.scale(bg,(screen_width,screen_height))
+		bg = pg.transform.scale(bg,(SCREEN_WIDTH,SCREEN_HEIGHT))
 		global bg_y
 		running = True
 		while running:	
@@ -317,9 +316,9 @@ class Game():
 			#背景を描画
 			#SCREEN.blit(self.bg,(0,0))
 			#ステージの描画
-			bg_y = (bg_y+0.4)%screen_height
+			bg_y = (bg_y+0.4)%SCREEN_HEIGHT
 			SCREEN.blit(bg,[0,bg_y])
-			SCREEN.blit(bg,[0,bg_y-screen_height])
+			SCREEN.blit(bg,[0,bg_y-SCREEN_HEIGHT])
 			self.stage.draw()
 
 			#プレイヤーが画面の端周辺に来た場合にバックグラウンド側を動かす処理（左右）
